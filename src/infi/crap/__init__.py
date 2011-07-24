@@ -87,7 +87,7 @@ class WrappedFunction(object):
 
     # default return value is ctypes.c_ulong
     # change if necessary when inherting
-    _return_value = ctypes.c_ulong
+    return_value = ctypes.c_ulong
 
     @classmethod
     def get_parameters(cls):
@@ -116,9 +116,15 @@ class WrappedFunction(object):
         return errcheck_nonzero()
 
     @classmethod
+    def get_library_name(cls):
+        """ returns the name of the shared library to load
+        """
+        raise NotImplementedError
+
+    @classmethod
     def _get_library(cls):
         try:
-            return ctypes.cdll.LoadLibrary(cls.get_library_name())
+            return getattr(ctypes.windll, cls.get_library_name())
         except:
             raise OSError
 
@@ -131,8 +137,8 @@ class WrappedFunction(object):
     @classmethod
     def _get_function(cls):
         name = cls.__name__
-        parameters = cls._get_parameters()
-        function = wrap_library_function(cls.__name__, cls._get_library(), cls._return_value,
+        parameters = cls.get_parameters()
+        function = wrap_library_function(cls.__name__, cls._get_library(), cls.return_value,
                                          parameters, cls.get_errcheck())
         return function
 
