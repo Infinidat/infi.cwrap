@@ -56,15 +56,19 @@ def _build_paramflags_for_prototype(parameters):
         paramflags += (parameter_tuple[1:],)
     return paramflags
 
-def wrap_library_function(name, library, return_value=ctypes.c_ulong, parameters=(), errcheck=errcheck_nonzero()):
+def wrap_library_function(name, library, function_type, return_value=ctypes.c_ulong, parameters=(), 
+                          errcheck=errcheck_nonzero()):
     """ this function wraps C library functions
     name            function name
+    library
+    function_type   string WINFUNCTYPE or CFUNCTYPE
     return_value    ctypes type
     parameters      tuple of the following form:
                     (ctypes_type, in/out, name, default_value)
+    errcheck
     """
     args = _build_args_for_functype(return_value, parameters)
-    function_type = getattr(ctypes, 'WINFUNCTYPE') if os.name == 'nt' else getattr(ctypes, 'CFUNCTYPE')
+    function_type = getattr(ctypes, function_type)
     function_prototype = function_type(*args)
     _paramflags = _build_paramflags_for_prototype(parameters)
     _function = function_prototype((name, library), _paramflags)
@@ -136,10 +140,9 @@ class WrappedFunction(object):
 
     @classmethod
     def _get_function(cls):
-        name = cls.__name__
         parameters = cls.get_parameters()
-        function = wrap_library_function(cls.__name__, cls._get_library(), cls.return_value,
-                                         parameters, cls.get_errcheck())
+        function = wrap_library_function(cls.__name__, cls._get_library(), cls._get_function_type(), 
+                                         cls.return_value, parameters, cls.get_errcheck())
         return function
 
     @classmethod
@@ -151,3 +154,6 @@ class WrappedFunction(object):
             return False
         return True # pragma: no cover
 
+    @classmethod
+    def _get_function_type(cls):
+        return 'WINFUNCTYPE' if os.name == 'nt' else 'CFUNCTYPE'
