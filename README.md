@@ -2,7 +2,7 @@ Overview
 ========
 
 Working with ctypes is hard. specifically, wrapping functions is hard.
-this module helps you do that.
+This module helps you do that.
 
 Usage
 -----
@@ -81,7 +81,7 @@ class CloseHandle(WrappedFunction):
     @classmethod
     def get_parameters(cls):
        return ((HANDLE, IN, "Device"),)
- 
+
 @contextmanager
 def open_handle(device_path, open_generic=False, open_shared=True):
     from constants import GENERIC_READ, GENERIC_WRITE, OPEN_EXISTING
