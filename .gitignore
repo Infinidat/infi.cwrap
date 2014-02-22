@@ -38,3 +38,4 @@ src/infi/cwrap/__version__.py
 
 src/infi/hbaapi/__version__.py
 bootstrap.py
+.cache
