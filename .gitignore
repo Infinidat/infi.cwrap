@@ -40,3 +40,4 @@ src/infi/hbaapi/__version__.py
 bootstrap.py
 .cache
 eggs
+parts
