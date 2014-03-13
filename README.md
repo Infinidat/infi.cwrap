@@ -2,7 +2,7 @@ Overview
 ========
 
 Working with ctypes is hard. specifically, wrapping functions is hard.
-this module helps you do that.
+This module helps you do that.
 
 Usage
 -----
@@ -81,7 +81,7 @@ class CloseHandle(WrappedFunction):
     @classmethod
     def get_parameters(cls):
        return ((HANDLE, IN, "Device"),)
- 
+
 @contextmanager
 def open_handle(device_path, open_generic=False, open_shared=True):
     from constants import GENERIC_READ, GENERIC_WRITE, OPEN_EXISTING
@@ -108,12 +108,7 @@ And here's we it is being used:
 Checking out the code
 =====================
 
-This project uses buildout and infi-projector, and git to generate setup.py and __version__.py.
-In order to generate these, first get infi-projector:
+Run the following:
 
-    easy_install infi.projector
-
-and then run in the project directory:
-
+    easy_install -U infi.projector
     projector devenv build
-
