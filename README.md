@@ -10,11 +10,10 @@ Usage
 Below is a production code that uses infi.cwrap:
 
 ```python
-from infi.exceptools import InfiException
 from infi.cwrap import WrappedFunction, IN, IN_OUT
 from ctypes import c_void_p, c_ulong
 
-class IoctlException(InfiException):
+class IoctlException(Exception):
     pass
 
 class WindowsException(IoctlException):
